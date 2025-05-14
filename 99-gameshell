@@ -1,0 +1,87 @@
+#!/bin/bash
+
+LANGUAGE="${LANG:0:2}"
+DATE_NOW=$(date "+%a %d %b %Y %H:%M:%S")
+
+# Forcer l'encodage UTF-8 dans le script
+export LANG=C.UTF-8
+export LC_ALL=C.UTF-8
+
+# Données
+# Récupérer l'IP et port distant avec ss
+SSH_INFO=$(ss -tuplan | grep ":22" | grep "ESTAB" | grep "$(whoami)" | awk '{print $6}' | head -n1)
+REMOTE_IP=$(echo "$SSH_INFO" | cut -d':' -f1)
+REMOTE_PORT=$(echo "$SSH_INFO" | cut -d':' -f2)
+
+# Si on n'a pas trouvé via whoami, on prend la dernière connexion
+if [ -z "$REMOTE_IP" ]; then
+    SSH_INFO=$(ss -tuplan | grep ":22" | grep "ESTAB" | awk '{print $6}' | head -n1)
+    REMOTE_IP=$(echo "$SSH_INFO" | cut -d':' -f1)
+    REMOTE_PORT=$(echo "$SSH_INFO" | cut -d':' -f2)
+fi
+HP=$(free -m | awk '/Mem:/ {print $3 " MB / " $2 " MB"}')
+EXP=$(uptime -p)
+USERNAME=$(who | awk '/pts\// {print $1; exit}')
+
+
+# Largeur de contenu visuel
+WIDTH=50
+
+# Bordures statiques (pas générées dynamiquement)
+TOP_BORDER="╔════════════════════════════════════════════════╗"
+MID_BORDER="╠════════════════════════════════════════════════╣"
+BOT_BORDER="╚════════════════════════════════════════════════╝"
+
+# Fonction pour centrer du texte
+center() {
+  text="$1"
+  padding=$(( ((WIDTH - ${#text}) / 2) -2 ))
+  printf "║%*s%s%*s║\n" "$padding" "" "$text" "$((WIDTH - padding-2 - ${#text}))" ""
+}
+
+BANNER=$(echo -e '\033[0;32m
+
+ ██████╗  █████╗ ███╗   ███╗███████╗███████╗██╗  ██╗███████╗██╗     ██╗
+██╔════╝ ██╔══██╗████╗ ████║██╔════╝██╔════╝██║  ██║██╔════╝██║     ██║
+██║  ███╗███████║██╔████╔██║█████╗  ███████╗███████║█████╗  ██║     ██║
+██║   ██║██╔══██║██║╚██╔╝██║██╔══╝  ╚════██║██╔══██║██╔══╝  ██║     ██║
+╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗███████║██║  ██║███████╗███████╗███████╗
+ ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝
+
+
+')
+
+# Affichage
+if [ "$LANGUAGE" = "fr" ]; then
+  echo ""
+  echo "🧙‍♂️  Bienvenue, Aventurier ! Vous êtes entré dans le Shell."
+  echo "$BANNER"
+  echo ""
+  echo "$TOP_BORDER"
+  center "🕹️  TERMINAL GAME SHELL - ACCÈS AUTORISÉ"
+  echo "$MID_BORDER"
+  printf "║ 🧑UTILISATEUR : %-31s║\n" "$USERNAME"
+  printf "║ 🌍ADRESSE IP  : %-31s║\n" "$REMOTE_IP:$REMOTE_PORT"
+  printf "║ 🔋VIE         : %-31s║\n" "$HP"
+  printf "║ 🧠EXPÉRIENCE  : %-31s║\n" "$EXP"
+  echo "$MID_BORDER"
+  printf "║ %-46s ║\n" "$DATE_NOW"
+  echo "$BOT_BORDER"
+else
+  echo ""
+  echo "🧙‍♂️  Welcome, Adventurer! You have entered the Shell."
+  echo "$BANNER"
+  echo ""
+  echo "$TOP_BORDER"
+  center "🕹️  GAME SHELL TERMINAL - ACCESS GRANTED"
+  echo "$MID_BORDER"
+  printf "║ 🧑USER        : %-31s║\n" "$USERNAME"
+  printf "║ 🌍IP ADDRESS  : %-31s║\n" "$REMOTE_IP:$REMOTE_PORT"
+  printf "║ 🔋HP          : %-31s║\n" "$HP"
+  printf "║ 🧠EXPERIENCE  : %-31s║\n" "$EXP"
+  echo "$MID_BORDER"
+  printf "║ %-46s ║\n" "$DATE_NOW"
+  echo "$BOT_BORDER"
+fi
+
+echo ""
