@@ -77,6 +77,7 @@ If you prefer a banner that appears **every time a terminal session is opened** 
 
 ```bash
 # Add at the end of ~/.bashrc
+clear # Cleans the terminal
 echo "✨ Welcome, $(whoami)!"
 ```
 
@@ -84,10 +85,11 @@ echo "✨ Welcome, $(whoami)!"
 
 ```bash
 # Add at the end of ~/.zshrc
+clear # Cleans the terminal
 echo "🧠 Ready to hack on $(hostname)?"
 ```
 
-> ⚠️ These run on **every interactive shell**, not just SSH logins.
+> ⚠️ These run on **every interactive shell**, not just SSH logins. Clears the terminal to show only what you have chosen.
 
 ---
 
