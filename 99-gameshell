@@ -1,5 +1,5 @@
 #!/bin/bash
-
+clear
 LANGUAGE="${LANG:0:2}"
 DATE_NOW=$(date "+%a %d %b %Y %H:%M:%S")
 
