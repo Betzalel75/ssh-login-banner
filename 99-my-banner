@@ -1,0 +1,30 @@
+#!/usr/bin/bash
+
+###################################################################################
+#  TITRE: Banner
+#
+#  AUTEUR:   Betzalel
+#  VERSION:  1.2
+#  CREATION: 27/04/2025
+#  MODIFIE: 31/07/2025
+#
+#  DESCRIPTION:  Script pour afficher un MOTD personnalisé dans le shell
+###################################################################################
+
+
+
+display_banner() {
+    echo ""
+    echo "🎉 Welcome to $(hostname)!"
+    echo "📅 Current date: $(date)"
+    echo "👤 User: $(whoami)"
+    echo ""
+    echo "💻 System Info:"
+    echo "  OS: $(uname -s)"
+    echo "  Kernel: $(uname -r)"
+    echo "  Architecture: $(uname -m)"
+    echo ""
+    curl -s wttr.in/Moon | head -n -1
+}
+
+display_banner
