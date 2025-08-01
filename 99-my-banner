@@ -20,7 +20,7 @@ display_banner() {
     echo "👤 User: $(whoami)"
     echo ""
     echo "💻 System Info:"
-    echo "  OS: $(uname -s)"
+    echo "  OS: $(sed -n 's/^NAME="\(.*\)"/\1/p' /etc/os-release)"
     echo "  Kernel: $(uname -r)"
     echo "  Architecture: $(uname -m)"
     echo ""
